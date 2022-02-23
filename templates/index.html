@@ -35,10 +35,33 @@
 
       .title {
         text-align: center;
-        font-size: 24px;
+        font-size: 30px;
         font-weight: bold;
-        margin-top: 50px;
-        margin-bottom: 20px;
+        margin-top: 70px;
+        margin-bottom: 50px;
+      }
+
+      .chart-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .mbti-circle {
+        position: relative;
+        margin: 40px;
+      }
+
+      .left {
+        position: absolute;
+        left: 0;
+        top: 155px;
+      }
+
+      .right {
+        position: absolute;
+        right: 0;
+        top: 155px;
       }
     </style>
     <script>
@@ -71,6 +94,17 @@
               { mbti: "enfp", count: 0 },
             ];
 
+            let mbti_detail = {
+              i: 0,
+              e: 0,
+              s: 0,
+              n: 0,
+              t: 0,
+              f: 0,
+              j: 0,
+              p: 0,
+            };
+
             let rows = response["user_list"];
             for (let i = 0; i < rows.length; i++) {
               let mbti = rows[i]["mbti"];
@@ -78,59 +112,122 @@
               switch (mbti) {
                 case "istj":
                   mbti_arr[0].count += 1;
+                  mbti_detail.i += 1;
+                  mbti_detail.s += 1;
+                  mbti_detail.t += 1;
+                  mbti_detail.j += 1;
                   break;
                 case "istp":
                   mbti_arr[1].count += 1;
+                  mbti_detail.i += 1;
+                  mbti_detail.s += 1;
+                  mbti_detail.t += 1;
+                  mbti_detail.p += 1;
                   break;
                 case "isfj":
                   mbti_arr[2].count += 1;
+                  mbti_detail.i += 1;
+                  mbti_detail.s += 1;
+                  mbti_detail.f += 1;
+                  mbti_detail.j += 1;
                   break;
                 case "isfp":
                   mbti_arr[3].count += 1;
+                  mbti_detail.i += 1;
+                  mbti_detail.s += 1;
+                  mbti_detail.f += 1;
+                  mbti_detail.p += 1;
                   break;
                 case "intj":
                   mbti_arr[4].count += 1;
+                  mbti_detail.i += 1;
+                  mbti_detail.n += 1;
+                  mbti_detail.t += 1;
+                  mbti_detail.j += 1;
                   break;
                 case "intp":
                   mbti_arr[5].count += 1;
+                  mbti_detail.i += 1;
+                  mbti_detail.n += 1;
+                  mbti_detail.t += 1;
+                  mbti_detail.p += 1;
                   break;
                 case "infj":
                   mbti_arr[6].count += 1;
+                  mbti_detail.i += 1;
+                  mbti_detail.n += 1;
+                  mbti_detail.f += 1;
+                  mbti_detail.j += 1;
                   break;
                 case "infp":
                   mbti_arr[7].count += 1;
+                  mbti_detail.i += 1;
+                  mbti_detail.n += 1;
+                  mbti_detail.f += 1;
+                  mbti_detail.p += 1;
                   break;
                 case "estj":
                   mbti_arr[8].count += 1;
+                  mbti_detail.e += 1;
+                  mbti_detail.s += 1;
+                  mbti_detail.t += 1;
+                  mbti_detail.j += 1;
                   break;
                 case "estp":
                   mbti_arr[9].count += 1;
+                  mbti_detail.e += 1;
+                  mbti_detail.s += 1;
+                  mbti_detail.t += 1;
+                  mbti_detail.p += 1;
                   break;
                 case "esfj":
                   mbti_arr[10].count += 1;
+                  mbti_detail.e += 1;
+                  mbti_detail.s += 1;
+                  mbti_detail.f += 1;
+                  mbti_detail.j += 1;
                   break;
                 case "esfp":
                   mbti_arr[11].count += 1;
+                  mbti_detail.e += 1;
+                  mbti_detail.s += 1;
+                  mbti_detail.f += 1;
+                  mbti_detail.p += 1;
                   break;
                 case "entj":
                   mbti_arr[12].count += 1;
+                  mbti_detail.e += 1;
+                  mbti_detail.n += 1;
+                  mbti_detail.t += 1;
+                  mbti_detail.j += 1;
                   break;
                 case "entp":
                   mbti_arr[13].count += 1;
+                  mbti_detail.e += 1;
+                  mbti_detail.n += 1;
+                  mbti_detail.t += 1;
+                  mbti_detail.p += 1;
                   break;
                 case "enfj":
                   mbti_arr[14].count += 1;
+                  mbti_detail.e += 1;
+                  mbti_detail.n += 1;
+                  mbti_detail.f += 1;
+                  mbti_detail.j += 1;
                   break;
                 case "enfp":
                   mbti_arr[15].count += 1;
+                  mbti_detail.e += 1;
+                  mbti_detail.n += 1;
+                  mbti_detail.f += 1;
+                  mbti_detail.p += 1;
                   break;
               }
             }
 
-            const ctx = document.getElementById("myChart").getContext("2d");
+            const ctx = $("#myChart");
             let dataSet = mbti_arr.map((obj) => obj.count);
-            console.log(dataSet);
-            const myChart = new Chart(ctx, {
+            new Chart(ctx, {
               type: "bar",
               data: {
                 labels: [
@@ -157,31 +254,39 @@
                     data: dataSet,
                     backgroundColor: [
                       "rgba(255, 99, 132, 0.2)",
+                      "rgba(54, 162, 235, 0.2)",
+                      "rgba(255, 206, 86, 0.2)",
+                      "rgba(75, 192, 192, 0.2)",
+                      "rgba(153, 102, 255, 0.2)",
+                      "rgba(207,255,64,0.2)",
+                      "rgba(255, 159, 64, 0.2)",
+                      "rgba(64,156,255,0.2)",
                       "rgba(255, 99, 132, 0.2)",
                       "rgba(54, 162, 235, 0.2)",
-                      "rgba(54, 162, 235, 0.2)",
-                      "rgba(255, 206, 86, 0.2)",
                       "rgba(255, 206, 86, 0.2)",
                       "rgba(75, 192, 192, 0.2)",
-                      "rgba(75, 192, 192, 0.2)",
                       "rgba(153, 102, 255, 0.2)",
-                      "rgba(153, 102, 255, 0.2)",
+                      "rgba(207,255,64,0.2)",
                       "rgba(255, 159, 64, 0.2)",
-                      "rgba(255, 159, 64, 0.2)",
+                      "rgba(64,156,255,0.2)",
                     ],
                     borderColor: [
                       "rgba(255, 99, 132, 1)",
+                      "rgba(54, 162, 235, 1)",
+                      "rgba(255, 206, 86, 1)",
+                      "rgba(75, 192, 192, 1)",
+                      "rgba(153, 102, 255, 1)",
+                      "rgba(207,255,64,1)",
+                      "rgba(255, 159, 64, 1)",
+                      "rgba(64,156,255,1)",
                       "rgba(255, 99, 132, 1)",
                       "rgba(54, 162, 235, 1)",
-                      "rgba(54, 162, 235, 1)",
-                      "rgba(255, 206, 86, 1)",
                       "rgba(255, 206, 86, 1)",
                       "rgba(75, 192, 192, 1)",
-                      "rgba(75, 192, 192, 1)",
                       "rgba(153, 102, 255, 1)",
-                      "rgba(153, 102, 255, 1)",
+                      "rgba(207,255,64,1)",
                       "rgba(255, 159, 64, 1)",
-                      "rgba(255, 159, 64, 1)",
+                      "rgba(64,156,255,1)",
                     ],
                     borderWidth: 0.1,
                   },
@@ -191,10 +296,161 @@
                 scales: {
                   y: {
                     beginAtZero: true,
+                    ticks: {
+                      stepSize: 1,
+                    },
                   },
                 },
               },
             });
+
+            const ctxMbtiIE = $("#mbtiIE");
+            new Chart(ctxMbtiIE, {
+              type: "doughnut",
+              data: {
+                datasets: [
+                  {
+                    data: [mbti_detail.i, mbti_detail.e],
+                    backgroundColor: [
+                      "rgba(255, 99, 132, 0.4)",
+                      "rgba(54, 162, 235, 0.4)",
+                    ],
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: "top",
+                  },
+                  title: {
+                    display: true,
+                    text: "E vs I",
+                  },
+                },
+              },
+            });
+            let temp_left = `<span class="left">${
+              mbti_detail.e
+            } 명 (${Math.round(
+              (mbti_detail.e / (mbti_detail.i + mbti_detail.e)) * 100
+            )}%)</span>`;
+            let temp_right = `<span class="right">${
+              mbti_detail.i
+            } 명 (${Math.round(
+              (mbti_detail.i / (mbti_detail.i + mbti_detail.e)) * 100
+            )}%)</span>`;
+            $(".mbti-ie").prepend(temp_left);
+            $(".mbti-ie").append(temp_right);
+
+            const ctxMbtiSN = $("#mbtiSN");
+            new Chart(ctxMbtiSN, {
+              type: "doughnut",
+              data: {
+                datasets: [
+                  {
+                    data: [mbti_detail.s, mbti_detail.n],
+                    backgroundColor: [
+                      "rgba(255, 206, 86, 0.4)",
+                      "rgba(75, 192, 192, 0.4)",
+                    ],
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: "top",
+                  },
+                  title: {
+                    display: true,
+                    text: "N vs S",
+                  },
+                },
+              },
+            });
+            temp_left = `<span class="left">${mbti_detail.n} 명 (${Math.round(
+              (mbti_detail.n / (mbti_detail.s + mbti_detail.n)) * 100
+            )}%)</span>`;
+            temp_right = `<span class="right">${mbti_detail.s} 명 (${Math.round(
+              (mbti_detail.s / (mbti_detail.s + mbti_detail.n)) * 100
+            )}%)</span>`;
+            $(".mbti-sn").prepend(temp_left);
+            $(".mbti-sn").append(temp_right);
+
+            const ctxMbtiTF = $("#mbtiTF");
+            new Chart(ctxMbtiTF, {
+              type: "doughnut",
+              data: {
+                datasets: [
+                  {
+                    data: [mbti_detail.t, mbti_detail.f],
+                    backgroundColor: [
+                      "rgba(153, 102, 255, 0.4)",
+                      "rgba(207,255,64,0.4)",
+                    ],
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: "top",
+                  },
+                  title: {
+                    display: true,
+                    text: "F vs T",
+                  },
+                },
+              },
+            });
+            temp_left = `<span class="left">${mbti_detail.f} 명 (${Math.round(
+              (mbti_detail.f / (mbti_detail.t + mbti_detail.f)) * 100
+            )}%)</span>`;
+            temp_right = `<span class="right">${mbti_detail.t} 명 (${Math.round(
+              (mbti_detail.t / (mbti_detail.t + mbti_detail.f)) * 100
+            )}%)</span>`;
+            $(".mbti-tf").prepend(temp_left);
+            $(".mbti-tf").append(temp_right);
+
+            const ctxMbtiJP = $("#mbtiJP");
+            new Chart(ctxMbtiJP, {
+              type: "doughnut",
+              data: {
+                datasets: [
+                  {
+                    data: [mbti_detail.j, mbti_detail.p],
+                    backgroundColor: [
+                      "rgba(255, 159, 64, 0.4)",
+                      "rgba(64,156,255,0.4)",
+                    ],
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: "top",
+                  },
+                  title: {
+                    display: true,
+                    text: "P vs J",
+                  },
+                },
+              },
+            });
+            temp_left = `<span class="left">${mbti_detail.p} 명 (${Math.round(
+              (mbti_detail.p / (mbti_detail.j + mbti_detail.p)) * 100
+            )}%)</span>`;
+            temp_right = `<span class="right">${mbti_detail.j} 명 (${Math.round(
+              (mbti_detail.j / (mbti_detail.j + mbti_detail.p)) * 100
+            )}%)</span>`;
+            $(".mbti-jp").prepend(temp_left);
+            $(".mbti-jp").append(temp_right);
           },
         });
       }
@@ -202,8 +458,22 @@
   </head>
   <body>
     <div class="title">항해99 6기 MBTI 통계</div>
-    <div style="width: 800px">
-      <canvas id="myChart" width="2" height="1"></canvas>
+
+    <div class="chart-container">
+      <canvas id="myChart" width="800" height="500"></canvas>
+
+      <div class="mbti-circle mbti-ie">
+        <canvas id="mbtiIE" width="300" height="300"></canvas>
+      </div>
+      <div class="mbti-circle mbti-sn">
+        <canvas id="mbtiSN" width="300" height="300"></canvas>
+      </div>
+      <div class="mbti-circle mbti-tf">
+        <canvas id="mbtiTF" width="300" height="300"></canvas>
+      </div>
+      <div class="mbti-circle mbti-jp">
+        <canvas id="mbtiJP" width="300" height="300"></canvas>
+      </div>
     </div>
   </body>
 </html>
