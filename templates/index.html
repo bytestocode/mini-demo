@@ -17,46 +17,168 @@
     ></script>
 
     <title>미니 - 데모</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0 auto;
+        width: 95%;
+        max-width: 780px;
+      }
+
+      .title {
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 50px;
+        margin-bottom: 20px;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0;
+      }
+
+      #mbti-list {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+      }
+
+      .mbti-container {
+        width: 48px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .mbti-graph {
+        width: 10px;
+        background-color: dodgerblue;
+      }
+
+      .mbti-container:hover .mbti-graph {
+        width: 11px;
+        background-color: royalblue;
+      }
+
+      .mbti-container:hover .mbti-name {
+        font-weight: bold;
+      }
+    </style>
     <script>
+      <!-- 메인화면 로드시 MBTI 통계를 불러오는 함수 호출 -->
       $(document).ready(function () {
-        listing();
+        show_stat();
       });
 
-      function listing() {
+      <!-- MBTI 통계를 불러오는 함수 정의 -->
+      function show_stat() {
         $.ajax({
           type: "GET",
-          url: "/bestseller",
+          url: "/mbti",
           data: {},
           success: function (response) {
-            let rows = response["best_list"];
-            for (let i = 0; rows.length; i++) {
-              let title = rows[i]["title"];
-              let img_url = rows[i]["img_url"];
-              let rank = i + 1;
+            <!-- MBTI별 인원을 담기 위한 객체 배열 선언 -->
+            let mbti_arr = [
+              { mbti: "istj", count: 0 },
+              { mbti: "istp", count: 0 },
+              { mbti: "isfj", count: 0 },
+              { mbti: "isfp", count: 0 },
+              { mbti: "intj", count: 0 },
+              { mbti: "intp", count: 0 },
+              { mbti: "infj", count: 0 },
+              { mbti: "infp", count: 0 },
+              { mbti: "estj", count: 0 },
+              { mbti: "estp", count: 0 },
+              { mbti: "esfj", count: 0 },
+              { mbti: "esfp", count: 0 },
+              { mbti: "entj", count: 0 },
+              { mbti: "entp", count: 0 },
+              { mbti: "enfj", count: 0 },
+              { mbti: "enfp", count: 0 },
+            ];
 
-              let temp_html = `<div class="col">
-          <div class="card h-100">
-            <img
-              src="${img_url}"
-              class="card-img-top"
-            />
-            <div class="card-body">
-              <h5 class="card-title">${rank}</h5>
-              <h5 class="card-title">${title}</h5>
-            </div>
-          </div>
-        </div>`;
+            <!-- GET 요청의 응답으로 받은 user_list를 rows 변수에 저장 -->
+            let rows = response["user_list"];
+            <!-- [{'mbti': 'intj'}, {'mbti': 'esfp'}, {'mbti': 'esfp'}, {'mbti': 'entp'}, {'mbti': 'isfp'}, {'mbti': 'istj'}, {'mbti': 'istp'}, {'mbti': 'isfp'}, {'mbti': 'infj'}, {'mbti': 'estj'}, {'mbti': 'esfj'}, {'mbti': 'esfp'}, {'mbti': 'entj'}, {'mbti': 'entp'}, {'mbti': 'enfp'}] -->
+            <!-- 유저 리스트를 돌면서 유저별 MBTI 카운트하기 -->
+            for (let i = 0; i < rows.length; i++) {
+              let mbti = rows[i]["mbti"];
 
-              $("#cards-box").append(temp_html);
+              switch (mbti) {
+                case "istj":
+                  mbti_arr[0].count += 1;
+                  break;
+                case "istp":
+                  mbti_arr[1].count += 1;
+                  break;
+                case "isfj":
+                  mbti_arr[2].count += 1;
+                  break;
+                case "isfp":
+                  mbti_arr[3].count += 1;
+                  break;
+                case "intj":
+                  mbti_arr[4].count += 1;
+                  break;
+                case "intp":
+                  mbti_arr[5].count += 1;
+                  break;
+                case "infj":
+                  mbti_arr[6].count += 1;
+                  break;
+                case "infp":
+                  mbti_arr[7].count += 1;
+                  break;
+                case "estj":
+                  mbti_arr[8].count += 1;
+                  break;
+                case "estp":
+                  mbti_arr[9].count += 1;
+                  break;
+                case "esfj":
+                  mbti_arr[10].count += 1;
+                  break;
+                case "esfp":
+                  mbti_arr[11].count += 1;
+                  break;
+                case "entj":
+                  mbti_arr[12].count += 1;
+                  break;
+                case "entp":
+                  mbti_arr[13].count += 1;
+                  break;
+                case "enfj":
+                  mbti_arr[14].count += 1;
+                  break;
+                case "enfp":
+                  mbti_arr[15].count += 1;
+                  break;
+              }
             }
+
+            <!-- MBTI별 카운트를 담은 MBTI 배열을 돌면서 그래프 만들기 -->
+            mbti_arr.forEach((obj) => {
+              let temp_html = `<div class="mbti-container"><div class="mbti-graph" style="height: ${
+                obj.count * 100
+              }px"></div><span class="mbti-name">${obj.mbti.toUpperCase()}</span></div>`;
+
+              $("#mbti-list").append(temp_html);
+            });
           },
         });
       }
     </script>
   </head>
   <body>
-    <div class="mycards">
-      <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box"></div>
+    <div class="title">항해99 6기 MBTI 통계</div>
+    <div class="container">
+      <div id="mbti-list"></div>
     </div>
   </body>
 </html>
