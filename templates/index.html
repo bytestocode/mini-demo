@@ -15,8 +15,10 @@
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
 
-    <title>미니 - 데모</title>
+    <title>항해99 6기 MBTI</title>
+
     <style>
       * {
         box-sizing: border-box;
@@ -26,6 +28,9 @@
         margin: 0 auto;
         width: 95%;
         max-width: 780px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
 
       .title {
@@ -35,55 +40,18 @@
         margin-top: 50px;
         margin-bottom: 20px;
       }
-
-      .container {
-        display: flex;
-        justify-content: center;
-        margin: 10px 0;
-      }
-
-      #mbti-list {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-end;
-      }
-
-      .mbti-container {
-        width: 48px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        transition: all 0.3s ease-in-out;
-      }
-
-      .mbti-graph {
-        width: 10px;
-        background-color: dodgerblue;
-      }
-
-      .mbti-container:hover .mbti-graph {
-        width: 11px;
-        background-color: royalblue;
-      }
-
-      .mbti-container:hover .mbti-name {
-        font-weight: bold;
-      }
     </style>
     <script>
-      <!-- 메인화면 로드시 MBTI 통계를 불러오는 함수 호출 -->
       $(document).ready(function () {
         show_stat();
       });
 
-      <!-- MBTI 통계를 불러오는 함수 정의 -->
       function show_stat() {
         $.ajax({
           type: "GET",
           url: "/mbti",
           data: {},
           success: function (response) {
-            <!-- MBTI별 인원을 담기 위한 객체 배열 선언 -->
             let mbti_arr = [
               { mbti: "istj", count: 0 },
               { mbti: "istp", count: 0 },
@@ -103,10 +71,7 @@
               { mbti: "enfp", count: 0 },
             ];
 
-            <!-- GET 요청의 응답으로 받은 user_list를 rows 변수에 저장 -->
             let rows = response["user_list"];
-            <!-- [{'mbti': 'intj'}, {'mbti': 'esfp'}, {'mbti': 'esfp'}, {'mbti': 'entp'}, {'mbti': 'isfp'}, {'mbti': 'istj'}, {'mbti': 'istp'}, {'mbti': 'isfp'}, {'mbti': 'infj'}, {'mbti': 'estj'}, {'mbti': 'esfj'}, {'mbti': 'esfp'}, {'mbti': 'entj'}, {'mbti': 'entp'}, {'mbti': 'enfp'}] -->
-            <!-- 유저 리스트를 돌면서 유저별 MBTI 카운트하기 -->
             for (let i = 0; i < rows.length; i++) {
               let mbti = rows[i]["mbti"];
 
@@ -162,13 +127,73 @@
               }
             }
 
-            <!-- MBTI별 카운트를 담은 MBTI 배열을 돌면서 그래프 만들기 -->
-            mbti_arr.forEach((obj) => {
-              let temp_html = `<div class="mbti-container"><div class="mbti-graph" style="height: ${
-                obj.count * 100
-              }px"></div><span class="mbti-name">${obj.mbti.toUpperCase()}</span></div>`;
-
-              $("#mbti-list").append(temp_html);
+            const ctx = document.getElementById("myChart").getContext("2d");
+            let dataSet = mbti_arr.map((obj) => obj.count);
+            console.log(dataSet);
+            const myChart = new Chart(ctx, {
+              type: "bar",
+              data: {
+                labels: [
+                  "ISTJ",
+                  "ISTP",
+                  "ISFJ",
+                  "ISFP",
+                  "INTJ",
+                  "INTP",
+                  "INFJ",
+                  "INFP",
+                  "ESTJ",
+                  "ESTP",
+                  "ESFJ",
+                  "ESFP",
+                  "ENTJ",
+                  "ENTP",
+                  "ENFJ",
+                  "ENFP",
+                ],
+                datasets: [
+                  {
+                    label: "명",
+                    data: dataSet,
+                    backgroundColor: [
+                      "rgba(255, 99, 132, 0.2)",
+                      "rgba(255, 99, 132, 0.2)",
+                      "rgba(54, 162, 235, 0.2)",
+                      "rgba(54, 162, 235, 0.2)",
+                      "rgba(255, 206, 86, 0.2)",
+                      "rgba(255, 206, 86, 0.2)",
+                      "rgba(75, 192, 192, 0.2)",
+                      "rgba(75, 192, 192, 0.2)",
+                      "rgba(153, 102, 255, 0.2)",
+                      "rgba(153, 102, 255, 0.2)",
+                      "rgba(255, 159, 64, 0.2)",
+                      "rgba(255, 159, 64, 0.2)",
+                    ],
+                    borderColor: [
+                      "rgba(255, 99, 132, 1)",
+                      "rgba(255, 99, 132, 1)",
+                      "rgba(54, 162, 235, 1)",
+                      "rgba(54, 162, 235, 1)",
+                      "rgba(255, 206, 86, 1)",
+                      "rgba(255, 206, 86, 1)",
+                      "rgba(75, 192, 192, 1)",
+                      "rgba(75, 192, 192, 1)",
+                      "rgba(153, 102, 255, 1)",
+                      "rgba(153, 102, 255, 1)",
+                      "rgba(255, 159, 64, 1)",
+                      "rgba(255, 159, 64, 1)",
+                    ],
+                    borderWidth: 0.1,
+                  },
+                ],
+              },
+              options: {
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                  },
+                },
+              },
             });
           },
         });
@@ -177,8 +202,8 @@
   </head>
   <body>
     <div class="title">항해99 6기 MBTI 통계</div>
-    <div class="container">
-      <div id="mbti-list"></div>
+    <div style="width: 800px">
+      <canvas id="myChart" width="2" height="1"></canvas>
     </div>
   </body>
 </html>
