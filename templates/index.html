@@ -25,12 +25,46 @@
       }
 
       body {
+        height: 100vh;
         margin: 0 auto;
-        width: 95%;
-        max-width: 780px;
         display: flex;
         flex-direction: column;
         align-items: center;
+      }
+
+      nav {
+        width: 100%;
+        height: 80px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        background-color: royalblue;
+      }
+
+      nav > span {
+        width: 160px;
+        height: 50px;
+        border-radius: 10px;
+        background-color: white;
+        transition: all 200ms ease-in-out;
+        margin: 0 10px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      nav > span > a {
+        font-size: 24px;
+        color: dodgerblue;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      nav > span:hover > a {
+        color: royalblue;
+        transform: translateY(2px);
       }
 
       .title {
@@ -38,13 +72,21 @@
         font-size: 30px;
         font-weight: bold;
         margin-top: 70px;
-        margin-bottom: 50px;
       }
 
       .chart-container {
+        height: 100%;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        justify-content: space-evenly;
+      }
+
+      #myChart {
+        margin: 0 auto;
+      }
+
+      .mbti-circles {
+        display: flex;
       }
 
       .mbti-circle {
@@ -65,6 +107,7 @@
       }
     </style>
     <script>
+      let user_mbti = "intj";
       $(document).ready(function () {
         show_stat();
       });
@@ -108,7 +151,7 @@
             let rows = response["user_list"];
             for (let i = 0; i < rows.length; i++) {
               let mbti = rows[i]["mbti"];
-
+              `1`;
               switch (mbti) {
                 case "istj":
                   mbti_arr[0].count += 1;
@@ -258,17 +301,17 @@
                       "rgba(255, 206, 86, 0.2)",
                       "rgba(75, 192, 192, 0.2)",
                       "rgba(153, 102, 255, 0.2)",
-                      "rgba(207,255,64,0.2)",
+                      "rgba(207, 255, 64, 0.2)",
                       "rgba(255, 159, 64, 0.2)",
-                      "rgba(64,156,255,0.2)",
+                      "rgba(64, 156, 255, 0.2)",
                       "rgba(255, 99, 132, 0.2)",
                       "rgba(54, 162, 235, 0.2)",
                       "rgba(255, 206, 86, 0.2)",
                       "rgba(75, 192, 192, 0.2)",
                       "rgba(153, 102, 255, 0.2)",
-                      "rgba(207,255,64,0.2)",
+                      "rgba(207, 255, 64, 0.2)",
                       "rgba(255, 159, 64, 0.2)",
-                      "rgba(64,156,255,0.2)",
+                      "rgba(64, 156, 255, 0.2)",
                     ],
                     borderColor: [
                       "rgba(255, 99, 132, 1)",
@@ -276,17 +319,17 @@
                       "rgba(255, 206, 86, 1)",
                       "rgba(75, 192, 192, 1)",
                       "rgba(153, 102, 255, 1)",
-                      "rgba(207,255,64,1)",
+                      "rgba(207, 255, 64, 1)",
                       "rgba(255, 159, 64, 1)",
-                      "rgba(64,156,255,1)",
+                      "rgba(64, 156, 255, 1)",
                       "rgba(255, 99, 132, 1)",
                       "rgba(54, 162, 235, 1)",
                       "rgba(255, 206, 86, 1)",
                       "rgba(75, 192, 192, 1)",
                       "rgba(153, 102, 255, 1)",
-                      "rgba(207,255,64,1)",
+                      "rgba(207, 255, 64, 1)",
                       "rgba(255, 159, 64, 1)",
-                      "rgba(64,156,255,1)",
+                      "rgba(64, 156, 255, 1)",
                     ],
                     borderWidth: 0.1,
                   },
@@ -331,14 +374,18 @@
                 },
               },
             });
-            let temp_left = `<span class="left">${
-              mbti_detail.e
-            } 명 (${Math.round(
+            let temp_left = `<span class="left" style="${
+              user_mbti[0] === "e"
+                ? "background-color: rgba(54, 162, 235, 1); color: white; font-weight: bold; padding: 5px; border-radius: 5px"
+                : ""
+            }">${mbti_detail.e} 명 (${Math.round(
               (mbti_detail.e / (mbti_detail.i + mbti_detail.e)) * 100
             )}%)</span>`;
-            let temp_right = `<span class="right">${
-              mbti_detail.i
-            } 명 (${Math.round(
+            let temp_right = `<span class="right" style="${
+              user_mbti[0] === "i"
+                ? "background-color: rgba(255, 99, 132, 1); color: white; font-weight: bold; padding: 5px; border-radius: 5px"
+                : ""
+            }">${mbti_detail.i} 명 (${Math.round(
               (mbti_detail.i / (mbti_detail.i + mbti_detail.e)) * 100
             )}%)</span>`;
             $(".mbti-ie").prepend(temp_left);
@@ -371,10 +418,18 @@
                 },
               },
             });
-            temp_left = `<span class="left">${mbti_detail.n} 명 (${Math.round(
+            temp_left = `<span class="left" style="${
+              user_mbti[1] === "n"
+                ? "background-color: rgba(75, 192, 192, 1); color: white; font-weight: bold; padding: 5px; border-radius: 5px"
+                : ""
+            }">${mbti_detail.n} 명 (${Math.round(
               (mbti_detail.n / (mbti_detail.s + mbti_detail.n)) * 100
             )}%)</span>`;
-            temp_right = `<span class="right">${mbti_detail.s} 명 (${Math.round(
+            temp_right = `<span class="right" style="${
+              user_mbti[1] === "s"
+                ? "background-color: rgba(255, 206, 86, 1); color: white; font-weight: bold; padding: 5px; border-radius: 5px"
+                : ""
+            }">${mbti_detail.s} 명 (${Math.round(
               (mbti_detail.s / (mbti_detail.s + mbti_detail.n)) * 100
             )}%)</span>`;
             $(".mbti-sn").prepend(temp_left);
@@ -389,7 +444,7 @@
                     data: [mbti_detail.t, mbti_detail.f],
                     backgroundColor: [
                       "rgba(153, 102, 255, 0.4)",
-                      "rgba(207,255,64,0.4)",
+                      "rgba(207, 255, 64, 0.4)",
                     ],
                   },
                 ],
@@ -407,10 +462,18 @@
                 },
               },
             });
-            temp_left = `<span class="left">${mbti_detail.f} 명 (${Math.round(
+            temp_left = `<span class="left" style="${
+              user_mbti[2] === "f"
+                ? "background-color: rgba(207, 255, 64, 1); color: white; font-weight: bold; padding: 5px; border-radius: 5px"
+                : ""
+            }">${mbti_detail.f} 명 (${Math.round(
               (mbti_detail.f / (mbti_detail.t + mbti_detail.f)) * 100
             )}%)</span>`;
-            temp_right = `<span class="right">${mbti_detail.t} 명 (${Math.round(
+            temp_right = `<span class="right" style="${
+              user_mbti[2] === "t"
+                ? "background-color: rgba(153, 102, 255, 1); color: white; font-weight: bold; padding: 5px; border-radius: 5px"
+                : ""
+            }">${mbti_detail.t} 명 (${Math.round(
               (mbti_detail.t / (mbti_detail.t + mbti_detail.f)) * 100
             )}%)</span>`;
             $(".mbti-tf").prepend(temp_left);
@@ -425,7 +488,7 @@
                     data: [mbti_detail.j, mbti_detail.p],
                     backgroundColor: [
                       "rgba(255, 159, 64, 0.4)",
-                      "rgba(64,156,255,0.4)",
+                      "rgba(64, 156, 255, 0.4)",
                     ],
                   },
                 ],
@@ -443,10 +506,18 @@
                 },
               },
             });
-            temp_left = `<span class="left">${mbti_detail.p} 명 (${Math.round(
+            temp_left = `<span class="left" style="${
+              user_mbti[3] === "p"
+                ? "background-color: rgba(64, 156, 255, 1); color: white; font-weight: bold; padding: 5px; border-radius: 5px"
+                : ""
+            }">${mbti_detail.p} 명 (${Math.round(
               (mbti_detail.p / (mbti_detail.j + mbti_detail.p)) * 100
             )}%)</span>`;
-            temp_right = `<span class="right">${mbti_detail.j} 명 (${Math.round(
+            temp_right = `<span class="right" style="${
+              user_mbti[3] === "j"
+                ? "background-color: rgba(255, 159, 64, 1); color: white; font-weight: bold; padding: 5px; border-radius: 5px"
+                : ""
+            }">${mbti_detail.j} 명 (${Math.round(
               (mbti_detail.j / (mbti_detail.j + mbti_detail.p)) * 100
             )}%)</span>`;
             $(".mbti-jp").prepend(temp_left);
@@ -457,22 +528,32 @@
     </script>
   </head>
   <body>
+    <nav>
+      {% for item in nav.top %}
+      <span class="{{ 'active' if item.is_active else '' }}">
+        <a href="{{ item.url }}">{{ item.label }}</a>
+      </span>
+      {% endfor %}
+    </nav>
+
     <div class="title">항해99 6기 MBTI 통계</div>
 
     <div class="chart-container">
-      <canvas id="myChart" width="800" height="500"></canvas>
+      <canvas id="myChart" width="1000" height="600"></canvas>
 
-      <div class="mbti-circle mbti-ie">
-        <canvas id="mbtiIE" width="300" height="300"></canvas>
-      </div>
-      <div class="mbti-circle mbti-sn">
-        <canvas id="mbtiSN" width="300" height="300"></canvas>
-      </div>
-      <div class="mbti-circle mbti-tf">
-        <canvas id="mbtiTF" width="300" height="300"></canvas>
-      </div>
-      <div class="mbti-circle mbti-jp">
-        <canvas id="mbtiJP" width="300" height="300"></canvas>
+      <div class="mbti-circles">
+        <div class="mbti-circle mbti-ie">
+          <canvas id="mbtiIE" width="300" height="300"></canvas>
+        </div>
+        <div class="mbti-circle mbti-sn">
+          <canvas id="mbtiSN" width="300" height="300"></canvas>
+        </div>
+        <div class="mbti-circle mbti-tf">
+          <canvas id="mbtiTF" width="300" height="300"></canvas>
+        </div>
+        <div class="mbti-circle mbti-jp">
+          <canvas id="mbtiJP" width="300" height="300"></canvas>
+        </div>
       </div>
     </div>
   </body>
