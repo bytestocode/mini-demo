@@ -23,7 +23,8 @@ def index():
 @app.route("/mbti", methods=["GET"])
 def user_get():
     user_list = list(db.hhnn.find({}, {'_id': False}))
-    print(user_list)
+    # user_list = None
+    # print(user_list)
     return jsonify({'user_list': user_list})
 
 
